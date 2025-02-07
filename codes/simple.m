@@ -1,24 +1,31 @@
+clear; close all; clc;
+mkdir results
+
 gsp_reset_seed(1);
 G = gsp_2dgrid(16);
 n = G.N;
 W0 = G.W;
 G = gsp_graph(G.W, G.coords+.05*rand(size(G.coords)));
+
 figure; gsp_plot_graph(G);
+exportgraphics(gcf, "results/graph-initial.pdf", "Append", false);
 
 X = G.coords';
 
 % First compute the matrix of all pairwise distances Z
 Z = gsp_distanz(X).^2;
-% this is a highly dense matrix
 figure; imagesc(Z);
-% Let's learn a graph, we need to know two parameters a and b according to
-% [1, Kalofolias, 2016]
+exportgraphics(gcf, "results/pairwise-distances.pdf", "Append", false);
+
+% Let's learn a graph, we need to know two parameters a and b according to `\color{codegreen}\cite{Kalofolias2016}`
 a = 1;
 b = 1;
 W = gsp_learn_graph_log_degrees(Z, a, b);
 % this matrix is naturally sparse, but still has many connections unless we
 % "play" with the parameters a and b to make it sparser
 figure; imagesc(W);
+exportgraphics(gcf, "results/graph-learned-ab1.pdf", "Append", false);
+
 % update weights
 W(W<1e-4) = 0;
 G = gsp_update_weights(G, W);
@@ -35,6 +42,9 @@ t1 = toc(t1);
 W(W<1e-4) = 0;
 % indeed, the new adjacency matrix has around 4 non zeros per row!
 figure; imagesc(W); title(['Average edges/node: ', num2str(nnz(W)/G.N)]);
+exportgraphics(gcf, "results/graph-learned-k4.pdf", "Append", false);
+
 % update weights and plot
 G = gsp_update_weights(G, W);
 figure; gsp_plot_graph(G);
+exportgraphics(gcf, "results/graph-final.pdf", "Append", false);
