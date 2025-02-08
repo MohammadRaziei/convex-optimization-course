@@ -276,10 +276,7 @@
 	$
 	\sum_{l=1}^{n} \ln \left( \sum_{j=1}^{n} w_{ij} \right)
 	$
-	است، با تعریف متغیر کمکی 	$S_i := \sum_{j=1}^{n} w_{ij}$	به قید تساوی تبدیل می‌شود.
-	
-	
-	
+	است، با تعریف متغیر کمکی 	$d_i := \sum_{j=1}^{n} w_{ij}$	به قید تساوی تبدیل می‌شود.\\
 	\begin{equation}\label{eq:opt2}
 		\begin{array}{cl}
 			\arg \minimize{\mathbf{W_{n \times n}}}&\sum_{i,j} \left\| \mathbf{x}_i - \mathbf{x}_j \right\|^2 w_{ij}
@@ -331,61 +328,65 @@
 	\section{تعیین مقادیر پارامتر های $\alpha$ و $\beta$}
 	در فرآیند یادگیری گراف، انتخاب پارامترهای مناسب تأثیر مستقیمی بر ساختار و تراکم گراف دارد. دو پارامتر کلیدی \( \alpha \) و \( \beta \) تنظیم‌کننده‌ی رفتار بهینه‌سازی هستند که بر مقیاس‌بندی وزن‌های یال‌ها و میزان تراکم گراف اثر می‌گذارند. تابع بهینه‌سازی پایه‌ای برای یافتن ماتریس وزن‌های \( \bm{W}^* \) به‌صورت زیر تعریف می‌شود:
 	
-	\[
-	\bm{W}^*(\bm{Z}, \alpha, \beta) = \arg \min_{\bm{W} \in \mathcal{W}_m} \|\bm{W} \circ \bm{Z}\|_{1,1} - \alpha \mathds{1}^\top \log(\bm{W} \mathds{1}) + \frac{\beta}{2} \|\bm{W}\|_F^2
-	\]
+	\begin{equation}\label{eqn:parames1}
+	\begin{array}{cl}
+	\bm{W}^*(\bm{Z}, \alpha, \beta) = &\arg \min_{\bm{W} \in \mathcal{W}_m} \|\bm{W} \circ \bm{Z}\|_{1,1} \\
+	&- \alpha \mathds{1}^\top \log(\bm{W} \mathds{1}) + \frac{\beta}{2} \|\bm{W}\|_F^2
+	\end{array}
+	\end{equation}
 	
-	در این تابع هزینه، ترم \( \|\bm{W} \circ \bm{Z}\|_{1,1} \) فاصله‌ی بین گره‌ها را در نظر می‌گیرد و همواری داده‌ها را حفظ می‌کند. ترم \( \alpha \mathds{1}^\top \log(\bm{W} \mathds{1}) \) توزیع یال‌ها و میزان درجه‌ی هر گره را کنترل می‌کند، در حالی که \( \frac{\beta}{2} \|\bm{W}\|_F^2 \) به‌عنوان یک منظم‌کننده‌ی فروبنیوس، مقدارهای بزرگ در وزن‌های یال‌ها را کاهش می‌دهد.
+	اگر جواب مسئله بهینه سازی 
+	\ref{eqn:parames1}
+	 را 
+	 $F(Z,\alpha,\beta)$
+	 بنامیم، می توان نشان داد که رابطه زیر برقرار است:
+	 \begin{equation}
+	 	F(Z,\alpha,\beta) = \gamma F(Z,\frac{\alpha}{\gamma}
+,\beta \gamma) = \alpha F(Z,1,\alpha \beta)
+	 \end{equation}
+	 اثبات:\\
+	 تعریف می شود:\\
+	 \begin{equation}
+	 	\tilde{W} = \frac{W}{\gamma}
+	 \end{equation}
+	 \begin{equation}\label{eqn:pof}
+	 	\begin{array}{cl}
+	 		&F(Z, \alpha, \beta) =\\
+	 		&\qquad= \gamma \arg\min_{\tilde{W}} \|\gamma \tilde{W} \circ Z\|_{1,1} - \alpha \mathbf{1}^\top \log(\gamma \tilde{W} \mathbf{1}) + \beta \|\gamma \tilde{W}\|_F^2\\
+	 		&\qquad = \gamma \arg\min_{\tilde{W}} \gamma \|\tilde{W} \circ Z\|_{1,1} - \alpha \mathbf{1}^\top \log(\tilde{W} \mathbf{1}) + \beta \gamma^2 \|\tilde{W}\|_F^2\\
+	 		&\qquad = \gamma \arg\min_{\tilde{W}} \|\tilde{W} \circ Z\|_{1,1} - \frac{\alpha}{\gamma} \mathbf{1}^\top \log(\tilde{W} \mathbf{1}) + \beta \gamma \|\tilde{W}\|_F^2\\
+	 		&\qquad = \gamma F \left( Z, \frac{\alpha}{\gamma}, \beta \gamma \right),
+	 	\end{array}
+	 \end{equation}
+	 اگر در رابطه
+	  \ref{eqn:pof}
+	  مقدار 
+	  $\gamma$
+	  را برابر با 
+	  $\sqrt{\frac{\alpha}{\beta}}$
+	  انتخاب شود و هر کدام از ورودی های تابع F بر 
+	  $\sqrt{\alpha \beta}$
+	  تقسیم شود نتیجه می دهد:
+	  \begin{equation}
+	  	W^*(Z, \alpha, \beta) = \sqrt{\frac{\alpha}{\beta}} W^* \left( \frac{1}{\sqrt{\alpha \beta}} Z, 1, 1 \right) = \delta W^* (\theta Z, 1, 1).
+	  \end{equation}
+	  که در آن
+	  $\delta=\sqrt{\frac{\alpha}{\beta}}$
+	 است و همچنین 
+	 $\theta = \frac{1}{\sqrt{\alpha \beta}}$
+	 است. 
+	  در نتیجه $\theta$ درجه رئوس را تعیین می کند و ضریب $\delta$ فقط وزن های ماتریس مجاورت را اسکیل می کند.
+	 
 	
-	برای ساده‌سازی این مسئله، یک ضریب مقیاس‌گذاری \( \delta \) تعریف می‌شود:
+	در مرجع نشان داده شده است که اگر مقدار \( \theta \) در بازه‌ی معادله
+	\ref{eq:interval}
+	قرار گیرد، میانگین درجه رئوس گراف برابر با مقدار \( k \) خواهد شد:
 	
-	\[
-	\delta = \sqrt{\frac{\alpha}{\beta}}
-	\]
-	
-	که اجازه می‌دهد تابع هزینه به فرم ساده‌تری تغییر یابد:
-	\begin{align}
-		\bm{W}^*(\bm{Z}, \alpha, \beta) = \delta \arg \minimize{\bm{W} \in \mathcal{W}_m} \|\bm{W} \circ \bm{Z}\|_{1,1} 
-		- \mathds{1}^\top \log(\bm{W} \mathds{1}) + \frac{1}{2} \|\bm{W}\|_F^2
-	\end{align}
-	
-	ضریب \( \delta \) تنها مقیاس مقدارهای وزن یال‌ها را تغییر می‌دهد و مستقیماً بر میزان تراکم گراف تأثیر نمی‌گذارد. در عوض، عامل تعیین‌کننده‌ی میزان یال‌های گراف، پارامتر \( \theta \) است که به‌صورت زیر تعریف می‌شود:
-	
-	\[
-	\theta = \sqrt{\frac{1}{\alpha \beta}}
-	\]
-	
-	و اجازه می‌دهد تابع هزینه به شکل نهایی زیر بازنویسی شود:
-	
-	\[
-	\bm{W}^*(\bm{Z}, \alpha, \beta) = \delta \bm{W}^*(\theta \bm{Z}, 1, 1)
-	\]
-	
-	این رابطه نشان می‌دهد که مقدار \( \theta \) مستقیماً تعداد یال‌های گراف را تنظیم می‌کند، در حالی که \( \delta \) صرفاً بر مقیاس وزن‌های یال تأثیر می‌گذارد. بنابراین، می‌توان مقدار مطلوبی از یال‌ها را با انتخاب مناسب \( \theta \) تعیین کرد، بدون نیاز به جستجوی گسترده در فضای پارامترها.
-	
-	برای تحلیل دقیق‌تر نقش \( \theta \)، مسئله‌ی بهینه‌سازی را می‌توان برای یک گره منفرد ساده کرد. در این حالت، تنها یک ستون از ماتریس وزن‌ها در نظر گرفته می‌شود و تقارن وزن‌ها نادیده گرفته می‌شود، که منجر به مسئله‌ی زیر می‌شود:
-	
-	\[
-	\minimize{\bm{w} \geq 0} \theta \bm{w}^\top \bm{z} - \log(\bm{w}^\top \mathds{1}) + \frac{1}{2} \|\bm{w}\|_2^2
-	\]
-	
-	در این تابع، ترم \( \theta \bm{w}^\top \bm{z} \) فاصله‌های بین گره‌ها را در نظر می‌گیرد که توسط \( \theta \) مقیاس‌بندی می‌شود. ترم \( \log(\bm{w}^\top \mathds{1}) \) توزیع یال‌ها را کنترل می‌کند و مجموع وزن‌های هر گره را تنظیم می‌کند، در حالی که ترم \( \frac{1}{2} \|\bm{w}\|_2^2 \) مقدارهای بیش‌ازحد بزرگ را منظم می‌کند. این مسئله نشان می‌دهد که \( \theta \) مستقیماً بر میزان یال‌های موجود در گراف اثر دارد و می‌توان مقدار مناسب آن را برای تنظیم پراکندگی گراف انتخاب کرد.
-	
-	تحلیل دقیق نشان می‌دهد که اگر مقدار \( \theta \) در بازه‌ی مشخصی قرار گیرد، تعداد دقیق یال‌های غیرصفر برای هر گره برابر با مقدار \( k \) خواهد شد:
-	
-	\begin{equation}
+	\begin{equation} \label{eq:interval}
 		\left( \frac{1}{\sqrt{k z_k^2 - b_k z_{k+1}}}, \frac{1}{\sqrt{k z_k^2 - b_k z_k}} \right)
 	\end{equation}
 	
-	این رابطه نشان می‌دهد که تنظیم مقدار \( \theta \) به ما امکان می‌دهد که تعداد یال‌های غیرصفر در هر گره را کنترل کنیم. این ویژگی به‌خصوص در یادگیری گراف‌های تنک بسیار مفید است، زیرا اجازه می‌دهد که ساختار گراف را با توجه به نیاز مسئله تنظیم کرده و از ایجاد یال‌های غیرضروری جلوگیری کنیم.
-	
-	در مقیاس کل گراف، مقدار \( \theta \) به گونه‌ای انتخاب می‌شود که میانگین تعداد یال‌های هر گره برابر با مقدار دلخواه باشد. در این حالت، مقدار مناسب \( \theta \) باید به گونه‌ای تنظیم شود که تعداد یال‌های گره‌ها در سراسر گراف به‌طور میانگین برابر مقدار هدف باشد. این مقدار را می‌توان از رابطه‌ی تحلیلی بین \( \theta \) و میانگین تعداد یال‌های هر گره استخراج کرد:
-	
-	\[
-	\mathbb{E}[d] \approx k
-	\]
-	
-	که در آن \( \mathbb{E}[d] \) مقدار مورد انتظار برای تعداد یال‌های هر گره است. مقدار مناسب \( \theta \) را می‌توان از طریق رابطه‌ای که میانگین درجه‌ی گره‌ها را کنترل می‌کند، تعیین کرد. نتایج تجربی نشان داده‌اند که مقدار اندازه‌گیری‌شده‌ی تراکم گره‌ها با حدود نظری تخمین‌زده‌شده برای \( \theta \) مطابقت دارد. این روش امکان یادگیری گراف با تعداد یال‌های کنترل‌شده را بدون نیاز به آزمایش‌های متعدد فراهم می‌کند و رویکردی تحلیلی و کارآمدتر نسبت به روش‌های کلاسیک که نیاز به تنظیم دستی دارند، ارائه می‌دهد.
+
 	
 	
 	\section{شبیه سازی}
@@ -393,38 +394,7 @@
 	
 	\subsection{با داده های مصنوعی}
 	
-	\subsection{با داده های واقعی}
 	
-	\begin{figure}[H]
-		\centering
-		\begin{adjustbox}{scale=.9}
-			\begin{tikzpicture}[every node/.style={}]
-				\node (image) at (0,0) {$n$ images};
-				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (vectorizer) at (3.1,0) {Vectorizer};
-				\node (features) at (6.5,0) {$n\times k$ features};
-				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (distance) at (6.5,-1.5) {Mutual distance};
-				\node (zdist) at (2.5,-1.5) {$n\times n$ distances};
-				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (graphlearning) at (2.5,-3) {Graph Learning};
-				\node (weights) at (5.8,-3) {$\bm{W}_{n\times n}$};
-				
-				\draw[-Stealth,line width=1] (image) -- (vectorizer);
-				\draw[-Stealth,line width=1] (vectorizer) -- (features);
-				\draw[-Stealth,line width=1] (features) -- (distance);
-				\draw[-Stealth,line width=1] (distance) -- (zdist);
-				\draw[-Stealth,line width=1] (zdist) -- (graphlearning);
-				\draw[-Stealth,line width=1] (graphlearning) -- (weights);
-			\end{tikzpicture}
-		\end{adjustbox}
-		\caption{
-		فلوچارت الگوریتم برای داده های 
-		\lr{IMAGENET}
-		}
-	\end{figure}
-	
-	
-
-	
-	\section{نتایج}
 	برای ارزیابی مدل، یک شبکه $16\times16$  مطابق شکل \ref{fig:graph-initial-1}  تولید شده است. سپس به مختصات (x,y) این شبکه، نویز تصادفی اضافه شده است تا کمی نقاط از جای اصلی خود جا به جا شوند. گراف متناظر با این نقاط با ماکزیمم درجه راس 4
 	\lr{(k=4)}
 	بدست آمده است. گراف نهایی در شکل
@@ -458,6 +428,50 @@
 		\label{fig:graph-learned-k4-1}
 	\end{figure}
 	
+	
+	\subsection{با داده های واقعی}
+	برای شبیه سازی با داده های واقعی نطابق بلوک دیاگرام نشان داده شده در شکل
+	\ref{fig:flowchart}
+	ابتدا با شبکه Resnet بردار های ویژگی 15 تصویر بدست آمده اند. سپس از روی این بردار های ویژگی و با الگوریتم ارائه شده در این مقاله، گرافی روی این 15 گره ایجاد شده است. نتایج این کار در 
+	\ref{fig:imgnet_result}
+	نشان داده شده است. در این شکل بین گره های کوسه ها ارتباطات بیشتری برقرار است و همچنین بین گره های ماهی ها هم ارتباطات بیترس برقرار شده است.
+	\begin{figure}[H]\label{fig:flowchart}
+		\centering
+		\begin{adjustbox}{scale=.9}
+			\begin{tikzpicture}[every node/.style={}]
+				\node (image) at (0,0) {$n$ images};
+				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (vectorizer) at (3.1,0) {Vectorizer};
+				\node (features) at (6.5,0) {$n\times k$ features};
+				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (distance) at (6.5,-1.5) {Mutual distance};
+				\node (zdist) at (2.5,-1.5) {$n\times n$ distances};
+				\node[fill=cyan!20,draw=black,radius=5pt,inner sep=10pt] (graphlearning) at (2.5,-3) {Graph Learning};
+				\node (weights) at (5.8,-3) {$\bm{W}_{n\times n}$};
+				
+				\draw[-Stealth,line width=1] (image) -- (vectorizer);
+				\draw[-Stealth,line width=1] (vectorizer) -- (features);
+				\draw[-Stealth,line width=1] (features) -- (distance);
+				\draw[-Stealth,line width=1] (distance) -- (zdist);
+				\draw[-Stealth,line width=1] (zdist) -- (graphlearning);
+				\draw[-Stealth,line width=1] (graphlearning) -- (weights);
+			\end{tikzpicture}
+		\end{adjustbox}
+		\caption{
+		فلوچارت الگوریتم برای داده های 
+		\lr{IMAGENET}
+		}
+	\end{figure}
+	
+	\begin{figure}[H]\label{fig:imgnet_result}
+		\centering
+		\includegraphics[width=0.7\linewidth]{codes/results/imagenet-graph-n.pdf}
+		\caption{
+		نتایح دسته بندی تصاویر IMAGENET با الگوریتم یادگیری گراف
+		}
+		\label{fig:graph-learned-k4-1}
+	\end{figure}
+
+	
+
 	\section{نتیجه گیری}
 	در این گزارش نحوه پیدا کردن گراف مناسب روی مجموعه از سیگنال ها بررسی شد. این مسئله منجر به بهینه سازی تابع هزینه معادله
 	\ref{eq:opt1}
