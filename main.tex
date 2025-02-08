@@ -226,6 +226,67 @@
     
 	\section{مقدمه}
 	در این گزارش، فرآیند یادگیری گراف با استفاده از روش \cite{Kalofolias2016} مورد بررسی قرار می‌گیرد. هدف این روش، یادگیری یک گراف از سیگنال‌های صاف (smooth signals) است به‌طوری‌که ساختار گراف به‌طور بهینه با داده‌ها سازگار باشد.
+	\section{بهینه سازی تابع هزینه}
+	هدف پیدا کردن جواب مسئله بهینه سازی
+	\ref{eq:opt1}
+	است. این مسئله یک مسئله بهینه سازی محدب است. برای حل این مسئله از الگوریتم ADMM استفاده شده است. زمان اجرای این الگوریتم به دلیل بهینه سازی جداگانه هر کدام از متغییر ها، نسبت به تعداد متغیر ها به صورت خطی افزایش می یابد به همین دلیل این الگوریتم انتخاب شده است. 
+	\begin{equation}\label{eq:opt1}
+		\begin{aligned}
+		& \mathbf{w_{\text{\lr{est}}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij} - \alpha \sum_{i=1}^{n} \log \left( \sum_{k=1}^{n} w_{ik} \right) + \frac{\beta}{2} \left\| \mathbf{W} \right\|_F^2 \\
+		& &\quad & \text{\lr{s.t.}} \quad w_{ij} \geq 0 
+		\end{aligned}
+	\end{equation}
+	برای نوشتن مسئله به فرم جدایی پذیر و حل آن با ADMM تنها جزء جدایی ناپذیر 
+	مسئله را که به‌صورت 
+	$
+	\sum_{l=1}^{n} \ln \left( \sum_{j=1}^{n} w_{ij} \right)
+	$
+است، با تعریف متغیر کمکی 	$S_i := \sum_{j=1}^{n} w_{ij}$	به قید تساوی تبدیل می‌شود.
+
+	\begin{equation}\label{eq:opt2}
+		\begin{aligned}
+			& \mathbf{w_{\text{\lr{est}}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij} 
+			- \alpha \sum_{i=1}^{n} \log \left( s_i \right) + \frac{\beta}{2} \left\| \mathbf{W} \right\|_F^2 \\
+			& &\quad & s_i = \sum_{j=1}^{n} w_{ij}, \quad w_{ij} > 0
+		\end{aligned}
+	\end{equation}
+	
+	اکنون مسئله به مسئله بهینه‌سازی یک تابع محدب با قید تساوی تبدیل شده است.
+	
+ 	قید نامساوی $w_{ij} \geq 0$ را می‌توان با تصویر کردن ضرایب \( w_{ij} \) 
+	در هر مرحله تکرار با رابطه $w_{ij} = \max(w_{ij}, 0)$ برآورده کرد.
+	
+	در نهایت با توجه به الگوریتم ADMM می‌توان بهینه‌سازی را با الگوریتم زیر انجام داد:
+	
+	\begin{equation}\label{eq:opt3}
+		\begin{aligned}
+			&L_{\rho} (W, s, \nu) = &\quad &\sum_{i,j} w_{ij} \left\| x_i - x_j \right\|^2 - \alpha \sum_{l=1}^{n} \ln (s_i) + \frac{\beta}{2} \sum_{i,j} (w_{ij})^2 \\
+			& &\quad &+ \sum_{i=1}^{N} \nu_i \left( s_i - \sum_{j=1}^{n} w_{ij} \right) + \frac{\rho}{2} \sum_{i=1}^{n} \left( s_i - \sum_{j=1}^{N} w_{ij} \right)^2
+		\end{aligned}
+	\end{equation}
+	
+	\begin{equation}\label{eq:admm_alg}
+		\begin{aligned}
+		&W_{ij}^{k+1} = \arg\min L_{\rho} (W, S^k, V^k)\\
+		&s_{ij}^{k+1} = \arg\min L_{\rho} (W^k, s, V^k)\\
+		&V^{k+1} = V^k + \rho \left( s_i - \sum_{j=1}^{n} W_{ij} \right)
+	\end{aligned}
+	\end{equation}
+	 مقادیر argmin در معادله \ref{eq:admm_alg} با مشتق گیری به صورت تحلیلی و برابر صفر گذاشتن مشتق می‌توان پیدا کرد.
+	 \begin{equation}\label{eq:iter}
+	 	\begin{aligned}
+	 	&w_{ij}^{k+1} = \max \left( \frac{1}{\beta + \rho} \left( \nu_i^k + \rho s_i + \sum_{j=1}^{N} w_{ij}^k - \|x_i^k - x_j^k\|^2 \right), 0 \right) \\
+	 	&s_i^{k+1} = \max \left( \frac{1}{2\rho} \left( -\left( \nu_i^k - \rho \sum_{j=1}^{N} w_{ij}^k \right) \pm \sqrt{\left( \nu_i^k - \rho w_{ij}^k \right)^2 + 4\alpha \rho} \right), 0 \right) \\
+	 	&\nu_i^{k+1} = \nu_i^k + \rho \left( s_i - \sum_{j=1}^{N} w_{ij} \right)
+	 	\end{aligned}
+	 \end{equation}
+	 	در نهایت با چند بار تکرار معادله \ref{eq:iter} مقادیر $w_{ij}$ به مقدار بهینه همگرا خواهد شد. همچنین با استفاده از الگوریتم های
+	 	 \lr{Approximate Nearest Neighbor (ANN)}
+	 	  مولفه هایی از $w_{ij}$ که فاصله $x_i$ و $x_j$ از یکدیگر زیاد باشد، صفر در نظر گرفته می‌شود و زمان محاسبه حاصل جمع های معاله \ref{eq:iter} از
+	 	   \lr{O(n)}
+	 	    به 
+	 	    \lr{O(k)}
+	 	     که k درجه راس های گراف است کاهش می یابد.
 	
 	\section{فرآیند یادگیری گراف}
 	
@@ -238,8 +299,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/graph-initial.pdf}
-		\caption{ساختار گراف اولیه.}
+		\includegraphics[width=0.7\textwidth]{codes/results/graph-initial.pdf}		\caption{ساختار گراف اولیه.}
 		\label{fig:graph-initial}
 	\end{figure}
 	
