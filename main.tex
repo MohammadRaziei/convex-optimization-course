@@ -1,14 +1,15 @@
-\documentclass[12pt,onecolumn,a4paper]{article}
-\usepackage{epsfig,graphicx,subfigure,amsthm,amsmath,bm,dsfont}
+\documentclass[10pt,twocolumn,a4paper]{article}
+\usepackage{epsfig,graphicx,amsthm,amsmath,bm,dsfont,bbold}
 \usepackage{color,xcolor}
 \usepackage{float,placeins}
 
 \usepackage{hyperref}
 
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=.5in]{geometry}
 \usepackage[numbers]{natbib}
 
 \usepackage{listings}
+\usepackage{cuted}
 
 \usepackage{xepersian}
 \settextfont[Scale=1.2]{XB Niloofar}
@@ -17,7 +18,10 @@
 
 
 
-\newcounter{subListing}[subfigure]
+
+
+
+%\newcounter{subListing}[subfigure]
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -56,56 +60,69 @@
 
 \linespread{1.5}
 
+\title{یادگیری گراف با استفاده از همواری}
+\author{
+محمد رضیئی فیحانی،
+علی مجلسی
+}
+\date{}
 
 \begin{document}
 
-	\begin{titlepage}
-		\begin{center}
-			
-			\includegraphics[width=4cm]{assets/logo-sharif.png} % آرم دانشگاه صنعتی شریف
-			
-			\vspace{1cm}
-			
-			{\huge \textbf{دانشگاه صنعتی شریف}}  
-			
-			\vspace{0.5cm}
-			
-			{\Large دانشکده مهندسی برق}
-			
-			\vspace{1.5cm}
-			
-			{\Huge \textbf{گزارش پروژه پایانی}} 
-			
-			\vspace{0.5cm}
-			
-			{\Large درس بهینه‌سازی محدب ۲}
-			
-			\vspace{1.5cm}
-			
-			{\Huge \textbf{یادگیری گراف با استفاده از همواری}}
-			
-			\vspace{1.5cm}
-			
-			\textbf{\Large استاد درس:}  
-			
-			\vspace{0.5cm}
-			
-			{\Large دکتر حامد شاه‌منصوری}
-			
-			\vspace{1.5cm}
-			
-			\textbf{\Large تهیه‌کنندگان:}  
-			
-			\vspace{0.5cm}
-			
-			{\Large محمد رضیئی فیجانی، علی مجلسی}
-			
-			\vfill
-			
-			{\Large \today}
-			
-		\end{center}
-	\end{titlepage}
+%	\begin{titlepage}
+%		\begin{center}
+%			
+%			\includegraphics[width=4cm]{assets/logo-sharif.png} % آرم دانشگاه صنعتی شریف
+%			
+%			\vspace{1cm}
+%			
+%			{\huge \textbf{دانشگاه صنعتی شریف}}  
+%			
+%			\vspace{0.5cm}
+%			
+%			{\Large دانشکده مهندسی برق}
+%			
+%			\vspace{1.5cm}
+%			
+%			{\Huge \textbf{گزارش پروژه پایانی}} 
+%			
+%			\vspace{0.5cm}
+%			
+%			{\Large درس بهینه‌سازی محدب ۲}
+%			
+%			\vspace{1.5cm}
+%			
+%			{\Huge \textbf{یادگیری گراف با استفاده از همواری}}
+%			
+%			\vspace{1.5cm}
+%			
+%			\textbf{\Large استاد درس:}  
+%			
+%			\vspace{0.5cm}
+%			
+%			{\Large دکتر حامد شاه‌منصوری}
+%			
+%			\vspace{1.5cm}
+%			
+%			\textbf{\Large تهیه‌کنندگان:}  
+%			
+%			\vspace{0.5cm}
+%			
+%			{\Large محمد رضیئی فیجانی، علی مجلسی}
+%			
+%			\vfill
+%			
+%			{\Large \today}
+%			
+%		\end{center}
+%	\end{titlepage}
+
+	\maketitle
+	
+	\section*{چکیده}
+ 	\begin{strip}
+ 		
+ 	\end{strip}
 	
 
 
@@ -122,7 +139,7 @@
       گفته می‌شود.
       
      
-     \subsection{صورت مسئله}
+
      
      
      
@@ -181,7 +198,7 @@
      $\mathcal{W}_m$
      مجموعه ماتریس های متقارن را نشان می‌دهد یعنی:
      \begin{equation}
-     	  \mathcal{W}_m = \big\{\bm{W} | \bm{W} = \bm{W}^\top, \bm{W} \in \mathds{R}^{n\times n}\big\}
+     	  \mathcal{W}_m = \big\{\bm{W} | \bm{W} = \bm{W}^\top, \bm{W} \in \mathds{R}_+^{n\times n}\big\}
      \end{equation}
      
      مدل \cite{Lake2010DiscoveringSB} تابع هدف را گسترش داده و از یک ترم لگاریتمی روی دترمینان لاپلاسین به همراه یک منظم‌کننده‌ی \( \ell_1 \) روی ماتریس وزن‌ها استفاده می‌کند:
@@ -196,7 +213,10 @@
       علاوه بر انرژی دیریشله، یک ترم اضافی نرم فروبنیوس برای کنترل مقدار \( \bm{L} \) اضافه شده است:
      
      \begin{equation}
-     	     \minimize{\bm{W}} \text{tr} (\bm{X}^\top \bm{L} \bm{X}) + \alpha \|\bm{L}\|_F^2 \quad \text{s.t.} \quad \text{tr}(\bm{L}) = n
+ 		\begin{array}{cl}
+    	     \minimize{\bm{L}} & \text{tr} (\bm{X}^\top \bm{L} \bm{X}) + \alpha \|\bm{L}\|_F^2 \\
+ 			\text{\lr{subject to}} & \text{tr}(\bm{L}) = n
+ 		\end{array}
      \end{equation}
      
      وجود \( \|\bm{L}\|_F^2 \) در تابع هدف به جلوگیری از مقدارهای بیش‌ازحد بزرگ در ماتریس لاپلاسین کمک می‌کند و شرط \( \text{tr}(\bm{L}) = n \) مقیاس گراف را کنترل می‌کند تا بیش از حد کوچک یا پراکنده نشود.
@@ -205,9 +225,9 @@
      \cite{Kalofolias2016}
      با اضافه کردن یک ترم لگاریتمی روی مجموع وزن‌ها و یک منظم‌کننده‌ی نرم فروبنیوس برای کنترل پیچیدگی گراف، یک روش جامع‌تر برای یادگیری گراف ارائه می‌دهد:
      
-     \[
-     \min \text{tr} (\bm{X}^\top \bm{L} \bm{X}) - \alpha \mathds{1}^\top \log (\bm{W} \mathds{1}) + \frac{\beta}{2} \|\bm{W}\|_F^2
-     \]
+\begin{equation}
+	    \minimize{\bm{W}\in\mathcal{W}_m} \text{tr} (\bm{X}^\top \bm{L} \bm{X}) - \alpha \mathds{1}^\top \log (\bm{W} \mathds{1}) + \frac{\beta}{2} \|\bm{W}\|_F^2
+\end{equation}
      
      ترم \( \mathds{1}^\top \log (\bm{W} \mathds{1}) \) باعث می‌شود که وزن‌های گراف به شکلی کنترل‌شده توزیع شوند و از تشکیل یال‌های بیش از حد ضعیف یا بسیار قوی جلوگیری شود، در حالی که ترم \( \|\bm{W}\|_F^2 \) از مقدارهای بیش‌ازحد بزرگ در وزن‌های یال‌ها جلوگیری می‌کند. این روش یک رویکرد بهینه برای یادگیری گراف‌های هموار ارائه می‌دهد که می‌تواند در کاربردهای مختلفی از جمله تحلیل شبکه‌های اجتماعی، پردازش سیگنال‌های گرافی و مدل‌سازی داده‌های غیرساختاریافته مورد استفاده قرار گیرد.
      
@@ -216,28 +236,94 @@
      در نهایت، تعادل میان پیچیدگی ساختاری گراف و میزان همواری داده‌ها، به عنوان یک مسئله‌ی بهینه‌سازی در یادگیری گراف مطرح می‌شود. مدل‌های مختلف ارائه‌شده نشان می‌دهند که می‌توان با انتخاب مناسب تابع هدف و قیود مربوطه، ساختار گرافی مطلوبی را یاد گرفت که ویژگی‌های ذاتی داده‌ها را به خوبی بازتاب دهد. این حوزه از تحقیق همچنان در حال پیشرفت است و روش‌های جدیدتر با در نظر گرفتن قیود فیزیکی، توپولوژیکی و داده‌محور، در حال توسعه هستند تا فرآیند یادگیری گراف را بهینه‌تر و کاربردی‌تر کنند.
      
      
+      \section{صورت مسئله}
      
      
      
-     
-     
+
+	\section{رویکرد بهینه سازی}
+      در فرآیند یادگیری گراف، انتخاب پارامترهای مناسب تأثیر مستقیمی بر ساختار و تراکم گراف دارد. دو پارامتر کلیدی \( \alpha \) و \( \beta \) تنظیم‌کننده‌ی رفتار بهینه‌سازی هستند که بر مقیاس‌بندی وزن‌های یال‌ها و میزان تراکم گراف اثر می‌گذارند. تابع بهینه‌سازی پایه‌ای برای یافتن ماتریس وزن‌های \( \bm{W}^* \) به‌صورت زیر تعریف می‌شود:
       
     \section{صورت مسئله}
     
-	\section{مقدمه}
-	در این گزارش، فرآیند یادگیری گراف با استفاده از روش \cite{Kalofolias2016} مورد بررسی قرار می‌گیرد. هدف این روش، یادگیری یک گراف از سیگنال‌های صاف (smooth signals) است به‌طوری‌که ساختار گراف به‌طور بهینه با داده‌ها سازگار باشد.
-	\section{بهینه سازی تابع هزینه}
+    	در این گزارش، فرآیند یادگیری گراف با استفاده از روش \cite{Kalofolias2016} مورد بررسی قرار می‌گیرد. هدف این روش، یادگیری یک گراف از سیگنال‌های صاف (smooth signals) است به‌طوری‌که ساختار گراف به‌طور بهینه با داده‌ها سازگار باشد.
+
 	هدف پیدا کردن جواب مسئله بهینه سازی
-	\ref{eq:opt1}
-	است. این مسئله یک مسئله بهینه سازی محدب است. برای حل این مسئله از الگوریتم ADMM استفاده شده است. زمان اجرای این الگوریتم به دلیل بهینه سازی جداگانه هر کدام از متغییر ها، نسبت به تعداد متغیر ها به صورت خطی افزایش می یابد به همین دلیل این الگوریتم انتخاب شده است. 
-	\begin{equation}\label{eq:opt1}
-		\begin{aligned}
-		& \mathbf{w_{\text{\lr{est}}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij} - \alpha \sum_{i=1}^{n} \log \left( \sum_{k=1}^{n} w_{ik} \right) + \frac{\beta}{2} \left\| \mathbf{W} \right\|_F^2 \\
-		& &\quad & \text{\lr{s.t.}} \quad w_{ij} \geq 0 
-		\end{aligned}
+\ref{eq:opt1}
+است. این مسئله یک مسئله بهینه سازی محدب است. 
+\begin{equation}\label{eq:opt1}
+	\begin{aligned}
+		& \bm{W}_{\text{\lr{est}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij} - \alpha \sum_{i=1}^{n} \log \left( \sum_{k=1}^{n} w_{ik} \right) + \frac{\beta}{2} \left\| \mathbf{W} \right\|_F^2 \\
+		& &\quad & \text{\lr{s.t.}} \quad w_{ij} \geq 0
+	\end{aligned}
+\end{equation}
+
+	\section{رویکرد بهینه سازی}
+	در فرآیند یادگیری گراف، انتخاب پارامترهای مناسب تأثیر مستقیمی بر ساختار و تراکم گراف دارد. دو پارامتر کلیدی \( \alpha \) و \( \beta \) تنظیم‌کننده‌ی رفتار بهینه‌سازی هستند که بر مقیاس‌بندی وزن‌های یال‌ها و میزان تراکم گراف اثر می‌گذارند. تابع بهینه‌سازی پایه‌ای برای یافتن ماتریس وزن‌های \( \bm{W}^* \) به‌صورت زیر تعریف می‌شود:
+
+	\[
+		\bm{W}^*(\bm{Z}, \alpha, \beta) = \arg \min_{\bm{W} \in \mathcal{W}_m} \|\bm{W} \circ \bm{Z}\|_{1,1} - \alpha \mathds{1}^\top \log(\bm{W} \mathds{1}) + \frac{\beta}{2} \|\bm{W}\|_F^2
+	\]
+
+	در این تابع هزینه، ترم \( \|\bm{W} \circ \bm{Z}\|_{1,1} \) فاصله‌ی بین گره‌ها را در نظر می‌گیرد و همواری داده‌ها را حفظ می‌کند. ترم \( \alpha \mathds{1}^\top \log(\bm{W} \mathds{1}) \) توزیع یال‌ها و میزان درجه‌ی هر گره را کنترل می‌کند، در حالی که \( \frac{\beta}{2} \|\bm{W}\|_F^2 \) به‌عنوان یک منظم‌کننده‌ی فروبنیوس، مقدارهای بزرگ در وزن‌های یال‌ها را کاهش می‌دهد.
+
+	برای ساده‌سازی این مسئله، یک ضریب مقیاس‌گذاری \( \delta \) تعریف می‌شود:
+
+	\[
+		\delta = \sqrt{\frac{\alpha}{\beta}}
+	\]
+
+	که اجازه می‌دهد تابع هزینه به فرم ساده‌تری تغییر یابد:
+
+	\[
+		\bm{W}^*(\bm{Z}, \alpha, \beta) = \delta \arg \min_{\bm{W} \in \mathcal{W}_m} \|\bm{W} \circ \bm{Z}\|_{1,1} - \mathds{1}^\top \log(\bm{W} \mathds{1}) + \frac{1}{2} \|\bm{W}\|_F^2
+	\]
+
+	ضریب \( \delta \) تنها مقیاس مقدارهای وزن یال‌ها را تغییر می‌دهد و مستقیماً بر میزان تراکم گراف تأثیر نمی‌گذارد. در عوض، عامل تعیین‌کننده‌ی میزان یال‌های گراف، پارامتر \( \theta \) است که به‌صورت زیر تعریف می‌شود:
+
+	\[
+		\theta = \sqrt{\frac{1}{\alpha \beta}}
+	\]
+
+	و اجازه می‌دهد تابع هزینه به شکل نهایی زیر بازنویسی شود:
+
+	\[
+		\bm{W}^*(\bm{Z}, \alpha, \beta) = \delta \bm{W}^*(\theta \bm{Z}, 1, 1)
+	\]
+
+	این رابطه نشان می‌دهد که مقدار \( \theta \) مستقیماً تعداد یال‌های گراف را تنظیم می‌کند، در حالی که \( \delta \) صرفاً بر مقیاس وزن‌های یال تأثیر می‌گذارد. بنابراین، می‌توان مقدار مطلوبی از یال‌ها را با انتخاب مناسب \( \theta \) تعیین کرد، بدون نیاز به جستجوی گسترده در فضای پارامترها.
+
+	برای تحلیل دقیق‌تر نقش \( \theta \)، مسئله‌ی بهینه‌سازی را می‌توان برای یک گره منفرد ساده کرد. در این حالت، تنها یک ستون از ماتریس وزن‌ها در نظر گرفته می‌شود و تقارن وزن‌ها نادیده گرفته می‌شود، که منجر به مسئله‌ی زیر می‌شود:
+
+	\[
+		\minimize{\bm{w} \geq 0} \theta \bm{w}^\top \bm{z} - \log(\bm{w}^\top \mathds{1}) + \frac{1}{2} \|\bm{w}\|_2^2
+	\]
+
+	در این تابع، ترم \( \theta \bm{w}^\top \bm{z} \) فاصله‌های بین گره‌ها را در نظر می‌گیرد که توسط \( \theta \) مقیاس‌بندی می‌شود. ترم \( \log(\bm{w}^\top \mathds{1}) \) توزیع یال‌ها را کنترل می‌کند و مجموع وزن‌های هر گره را تنظیم می‌کند، در حالی که ترم \( \frac{1}{2} \|\bm{w}\|_2^2 \) مقدارهای بیش‌ازحد بزرگ را منظم می‌کند. این مسئله نشان می‌دهد که \( \theta \) مستقیماً بر میزان یال‌های موجود در گراف اثر دارد و می‌توان مقدار مناسب آن را برای تنظیم پراکندگی گراف انتخاب کرد.
+
+	تحلیل دقیق نشان می‌دهد که اگر مقدار \( \theta \) در بازه‌ی مشخصی قرار گیرد، تعداد دقیق یال‌های غیرصفر برای هر گره برابر با مقدار \( k \) خواهد شد:
+
+	\begin{equation}
+		\left( \frac{1}{\sqrt{k z_k^2 - b_k z_{k+1}}}, \frac{1}{\sqrt{k z_k^2 - b_k z_k}} \right)
 	\end{equation}
-	برای نوشتن مسئله به فرم جدایی پذیر و حل آن با ADMM تنها جزء جدایی ناپذیر 
-	مسئله را که به‌صورت 
+
+	این رابطه نشان می‌دهد که تنظیم مقدار \( \theta \) به ما امکان می‌دهد که تعداد یال‌های غیرصفر در هر گره را کنترل کنیم. این ویژگی به‌خصوص در یادگیری گراف‌های تنک بسیار مفید است، زیرا اجازه می‌دهد که ساختار گراف را با توجه به نیاز مسئله تنظیم کرده و از ایجاد یال‌های غیرضروری جلوگیری کنیم.
+
+	در مقیاس کل گراف، مقدار \( \theta \) به گونه‌ای انتخاب می‌شود که میانگین تعداد یال‌های هر گره برابر با مقدار دلخواه باشد. در این حالت، مقدار مناسب \( \theta \) باید به گونه‌ای تنظیم شود که تعداد یال‌های گره‌ها در سراسر گراف به‌طور میانگین برابر مقدار هدف باشد. این مقدار را می‌توان از رابطه‌ی تحلیلی بین \( \theta \) و میانگین تعداد یال‌های هر گره استخراج کرد:
+
+	\[
+		\mathbb{E}[d] \approx k
+	\]
+
+	که در آن \( \mathbb{E}[d] \) مقدار مورد انتظار برای تعداد یال‌های هر گره است. مقدار مناسب \( \theta \) را می‌توان از طریق رابطه‌ای که میانگین درجه‌ی گره‌ها را کنترل می‌کند، تعیین کرد. نتایج تجربی نشان داده‌اند که مقدار اندازه‌گیری‌شده‌ی تراکم گره‌ها با حدود نظری تخمین‌زده‌شده برای \( \theta \) مطابقت دارد. این روش امکان یادگیری گراف با تعداد یال‌های کنترل‌شده را بدون نیاز به آزمایش‌های متعدد فراهم می‌کند و رویکردی تحلیلی و کارآمدتر نسبت به روش‌های کلاسیک که نیاز به تنظیم دستی دارند، ارائه می‌دهد.
+
+
+	\section{حل مسئله‌ی بهینه سازی}
+	
+	برای حل این مسئله از الگوریتم ADMM استفاده شده است. زمان اجرای این الگوریتم به دلیل بهینه سازی جداگانه هر کدام از متغییر ها، نسبت به تعداد متغیر ها به صورت خطی افزایش می یابد به همین دلیل این الگوریتم انتخاب شده است.
+
+	برای نوشتن مسئله به فرم جدایی پذیر و حل آن با ADMM تنها جزء جدایی ناپذیر
+	مسئله را که به‌صورت
 	$
 	\sum_{l=1}^{n} \ln \left( \sum_{j=1}^{n} w_{ij} \right)
 	$
@@ -245,26 +331,26 @@
 
 	\begin{equation}\label{eq:opt2}
 		\begin{aligned}
-			& \mathbf{w_{\text{\lr{est}}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij} 
+			& \mathbf{w_{\text{\lr{est}}}} = &\quad &\arg \min_{\mathbf{w_{n \times n}}}\sum_{i,j} \left\| \mathbf{X}(i) - \mathbf{X}(j) \right\|^2 w_{ij}
 			- \alpha \sum_{i=1}^{n} \log \left( s_i \right) + \frac{\beta}{2} \left\| \mathbf{W} \right\|_F^2 \\
 			& &\quad & s_i = \sum_{j=1}^{n} w_{ij}, \quad w_{ij} > 0
 		\end{aligned}
 	\end{equation}
-	
+
 	اکنون مسئله به مسئله بهینه‌سازی یک تابع محدب با قید تساوی تبدیل شده است.
-	
- 	قید نامساوی $w_{ij} \geq 0$ را می‌توان با تصویر کردن ضرایب \( w_{ij} \) 
+
+ 	قید نامساوی $w_{ij} \geq 0$ را می‌توان با تصویر کردن ضرایب \( w_{ij} \)
 	در هر مرحله تکرار با رابطه $w_{ij} = \max(w_{ij}, 0)$ برآورده کرد.
-	
+
 	در نهایت با توجه به الگوریتم ADMM می‌توان بهینه‌سازی را با الگوریتم زیر انجام داد:
-	
+
 	\begin{equation}\label{eq:opt3}
 		\begin{aligned}
 			&L_{\rho} (W, s, \nu) = &\quad &\sum_{i,j} w_{ij} \left\| x_i - x_j \right\|^2 - \alpha \sum_{l=1}^{n} \ln (s_i) + \frac{\beta}{2} \sum_{i,j} (w_{ij})^2 \\
 			& &\quad &+ \sum_{i=1}^{N} \nu_i \left( s_i - \sum_{j=1}^{n} w_{ij} \right) + \frac{\rho}{2} \sum_{i=1}^{n} \left( s_i - \sum_{j=1}^{N} w_{ij} \right)^2
 		\end{aligned}
 	\end{equation}
-	
+
 	\begin{equation}\label{eq:admm_alg}
 		\begin{aligned}
 		&W_{ij}^{k+1} = \arg\min L_{\rho} (W, S^k, V^k)\\
@@ -284,9 +370,22 @@
 	 	 \lr{Approximate Nearest Neighbor (ANN)}
 	 	  مولفه هایی از $w_{ij}$ که فاصله $x_i$ و $x_j$ از یکدیگر زیاد باشد، صفر در نظر گرفته می‌شود و زمان محاسبه حاصل جمع های معاله \ref{eq:iter} از
 	 	   \lr{O(n)}
-	 	    به 
+	 	    به
 	 	    \lr{O(k)}
 	 	     که k درجه راس های گراف است کاهش می یابد.
+
+
+
+
+
+
+  \bibliographystyle{plainnat-fa}
+\bibliography{assets/references}
+\nocite{*}
+
+
+
+	\appendix
 	
 	\section{فرآیند یادگیری گراف}
 	
@@ -299,7 +398,8 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/graph-initial.pdf}		\caption{ساختار گراف اولیه.}
+		\includegraphics[width=0.7\linewidth]{codes/results/graph-initial.pdf}
+		\caption{ساختار گراف اولیه.}
 		\label{fig:graph-initial}
 	\end{figure}
 	
@@ -319,7 +419,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/pairwise-distances.pdf}
+		\includegraphics[width=0.7\linewidth]{codes/results/pairwise-distances.pdf}
 		\caption{ماتریس فواصل جفتی \( Z \).}
 		\label{fig:pairwise-distances}
 	\end{figure}
@@ -341,7 +441,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/graph-learned-ab1.pdf}
+		\includegraphics[width=0.7\linewidth]{codes/results/graph-learned-ab1.pdf}
 		\caption{گراف یادگرفته‌شده با \( a = 1 \) و \( b = 1 \).}
 		\label{fig:graph-learned-ab1}
 	\end{figure}
@@ -362,7 +462,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/graph-learned-k4.pdf}
+		\includegraphics[width=0.7\linewidth]{codes/results/graph-learned-k4.pdf}
 		\caption{گراف یادگرفته‌شده با \( k = 4 \) یال در هر گره به‌طور متوسط.}
 		\label{fig:graph-learned-k4}
 	\end{figure}
@@ -377,7 +477,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.7\textwidth]{codes/results/graph-final.pdf}
+		\includegraphics[width=0.7\linewidth]{codes/results/graph-final.pdf}
 		\caption{ساختار نهایی گراف.}
 		\label{fig:graph-final}
 	\end{figure}
@@ -385,7 +485,5 @@
     	
 
     
-    \bibliographystyle{plainnat-fa}
-    \bibliography{assets/references}
-	\nocite{*}
+  
 \end{document}
